@@ -19,18 +19,20 @@ function App() {
       studios: "",
     },
   ]);
-  const [answer , setAnswer] = useState<undefined |any>(undefined)
+  const [answer, setAnswer] = useState<undefined | any>(undefined);
   const [guessInfo, setGuessInfo] = useState<undefined | any>(undefined);
   const [correctAnswer, setCorrectAnswer] = useState(false);
   const upArrow = "\u25B2";
   const downArrow = "\u25BC";
   const greenbox = "\u2713";
   const redbox = "\u2716";
-  const dash = "-"
+  const dash = "-";
   ///const [score,setScore] = useState('');
   ///const [startYear, setStartYear] =  useState('');
   ///const [studio,setStudio] = useState('');
-  if(guessNumber ===0) {alert("you ran out of guesses. Game over")};
+  if (guessNumber === 0) {
+    alert("you ran out of guesses. Game over");
+  }
   useEffect(() => {
     console.log(guessInfo);
     if (guessInfo !== undefined) {
@@ -43,33 +45,27 @@ function App() {
           var year = element.year;
           var studio = element.studios[0].name;
           if (name === answer.name) {
-            setCorrectAnswer(true)
-            alert("you got the answer correct. Congratulations")
-          } ;
+            setCorrectAnswer(true);
+            alert("you got the answer correct. Congratulations");
+          }
           if (answer.score < score) {
-            score = (element.score + downArrow)
+            score = element.score + downArrow;
+          } else if (answer.score > score) {
+            score = element.score + upArrow;
+          } else if (answer.score == score) {
+            score = element.score + dash;
           }
-          else if(answer.score > score){
-            score =(element.score + upArrow)
-          }
-          else if (answer.score == score){
-            score =(element.score + dash)
-          }
-          if(element.studios[0].name === answer.studios){
-            
-            studio =(studio + greenbox)
-          }
-          else if(studio !== answer.studios){
-            studio =(studio + redbox)
+          if (element.studios[0].name === answer.studios) {
+            studio = studio + greenbox;
+          } else if (studio !== answer.studios) {
+            studio = studio + redbox;
           }
           if (answer.startYear < year) {
-            year = (year + downArrow)
-          }
-          else if(answer.startYear > year){
-            year =(year + upArrow)
-          }
-          else if (answer.startYear == year){
-            year =(year + dash)
+            year = year + downArrow;
+          } else if (answer.startYear > year) {
+            year = year + upArrow;
+          } else if (answer.startYear == year) {
+            year = year + dash;
           }
           const newGuess = {
             guessNumber: guessNumber,
@@ -90,12 +86,12 @@ function App() {
     if (guessInfo === []) {
       alert("anime not found, please check spelling");
     }
-  }, [guessInfo,answer]);
+  }, [guessInfo, answer]);
   const AnimeApi = "https://api.jikan.moe/v4/anime";
   useEffect(() => {
     const answerNumber = Math.floor(Math.random() * 10);
-   setAnswer(possibleAnswers[answerNumber]);
-   const ans = possibleAnswers[answerNumber];
+    setAnswer(possibleAnswers[answerNumber]);
+    const ans = possibleAnswers[answerNumber];
     console.log(
       "The random number is %d, and the anime is , %s",
       answerNumber,
