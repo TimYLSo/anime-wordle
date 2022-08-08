@@ -5,6 +5,7 @@ import "./App.css";
 import possibleAnswers from "./answers.json";
 ///import Icon from "@mui/material/Icon";
 import axios from "axios";
+import { Alert } from "@mui/material";
 
 function App() {
   const [guess, setGuess] = useState("");
@@ -18,51 +19,94 @@ function App() {
       studios: "",
     },
   ]);
-  const [guessInfo, setGuessInfo] = useState<undefined |any>(
-    undefined
-  );
+  const [answer , setAnswer] = useState<undefined |any>(undefined)
+  const [guessInfo, setGuessInfo] = useState<undefined | any>(undefined);
+  const [correctAnswer, setCorrectAnswer] = useState(false);
+  const upArrow = "\u25B2";
+  const downArrow = "\u25BC";
+  const greenbox = "\u2713";
+  const redbox = "\u2716";
+  const dash = "-"
+  ///const [score,setScore] = useState('');
+  ///const [startYear, setStartYear] =  useState('');
+  ///const [studio,setStudio] = useState('');
+  if(guessNumber ===0) {alert("you ran out of guesses. Game over")};
   useEffect(() => {
     console.log(guessInfo);
-    if(guessInfo !== undefined){
-   for( const element of guessInfo){
-      if(element.approved === true){
-        console.log(element,"currently on this anime")
-        const newGuess = {
-          guessNumber:guessNumber,
-          name: element.title,
-          score: element.score,
-          startYear:  element.year,
-          studios: element.studios[0].name,
-        };
-        console.log(newGuess)
-        const newGuesses = [newGuess, ...guessTable];
-        setGuessTable(newGuesses);
-        console.log("rendered table");
-        setGuessNumber((guessNumber) => guessNumber - 1);
-        break
+    if (guessInfo !== undefined) {
+      console.log("rendering table");
+      for (const element of guessInfo) {
+        if (element.approved === true) {
+          console.log(element, "currently on this anime");
+          const name = element.title;
+          var score = element.score;
+          var year = element.year;
+          var studio = element.studios[0].name;
+          if (name === answer.name) {
+            setCorrectAnswer(true)
+            alert("you got the answer correct. Congratulations")
+          } ;
+          if (answer.score < score) {
+            score = (element.score + downArrow)
+          }
+          else if(answer.score > score){
+            score =(element.score + upArrow)
+          }
+          else if (answer.score == score){
+            score =(element.score + dash)
+          }
+          if(element.studios[0].name === answer.studios){
+            
+            studio =(studio + greenbox)
+          }
+          else if(studio !== answer.studios){
+            studio =(studio + redbox)
+          }
+          if (answer.startYear < year) {
+            year = (year + downArrow)
+          }
+          else if(answer.startYear > year){
+            year =(year + upArrow)
+          }
+          else if (answer.startYear == year){
+            year =(year + dash)
+          }
+          const newGuess = {
+            guessNumber: guessNumber,
+            name: name,
+            score: score,
+            startYear: year,
+            studios: studio,
+          };
+          console.log(newGuess);
+          const newGuesses = [newGuess, ...guessTable];
+          setGuessTable(newGuesses);
+          console.log("rendered table");
+          setGuessNumber((guessNumber) => guessNumber - 1);
+          break;
+        }
       }
-      console.log(element.title,element.approved)
-      ///alert("anime not found")
-    };
-
-
-  };
-  }, [guessInfo]);
+    }
+    if (guessInfo === []) {
+      alert("anime not found, please check spelling");
+    }
+  }, [guessInfo,answer]);
   const AnimeApi = "https://api.jikan.moe/v4/anime";
   useEffect(() => {
     const answerNumber = Math.floor(Math.random() * 10);
-    const answer = possibleAnswers[answerNumber];
+   setAnswer(possibleAnswers[answerNumber]);
+   const ans = possibleAnswers[answerNumber];
     console.log(
       "The random number is %d, and the anime is , %s",
       answerNumber,
-      answer["name"]
+      ans["name"]
     );
   }, []);
 
   return (
     <div>
       <button onClick={handleGuess}>info</button>
-      <h1>Enter your guess here</h1>
+      <h1>Enter your guess here{upArrow}</h1>
       <div>
         <label>Guess</label>
         <br />
@@ -81,7 +125,7 @@ function App() {
         <table>
           <thead>
             <tr>
-            <th>guess</th>
+              <th>guess</th>
               <th>Name</th>
               <th>Score</th>
               <th>Start Year</th>
@@ -105,35 +149,24 @@ function App() {
   );
 
   function handleGuess() {
-
-    
     getAnime();
-   
-
   }
-  async function getAnime () {
+  async function getAnime() {
     console.log("Guess number %d is %s", guessNumber, guess);
 
     await axios
-    .get(AnimeApi ,{params:{q:guess,type:"tv",sort:"asc",aproved:true,
-}})
-    .then((res) => {
-      const response = res.data.data
-      setGuessInfo(response);
-      console.log("got response");
-      console.log(res)
+      .get(AnimeApi, {
+        params: { q: guess, type: "tv", sort: "asc", aproved: true },
+      })
+      .then((res) => {
+        const response = res.data.data;
+        setGuessInfo(response);
+        console.log("got response");
+        console.log(res);
 
-      console.log(guessInfo);}
-      )
-
-      
-
-      ;
-
-
-}
-
+        console.log(guessInfo);
+      });
   }
-
+}
 
 export default App;
