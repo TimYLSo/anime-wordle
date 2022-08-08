@@ -1,7 +1,7 @@
 [{
     "name":"Shingeki no Kyojin",
-    "score":8.53,
-    "startYear":2013,
+    "score":"8.53",
+    "startYear":"2013",
     "studios":"Wit studio"
 
 
@@ -9,72 +9,72 @@
 },
 {
     "name":"Death Note",
-    "score":8.62,
-    "startYear":2006,
+    "score":"8.62",
+    "startYear":"2006",
     "studios":"Madhouse"
 
 
 
 },{
     "name":"Fullmetal Alchemist: Brotherhood",
-    "score":9.13,
-    "startYear":2009,
+    "score":"9.13",
+    "startYear":"2009",
     "studios":"Bones"
 
 
 
 },{
     "name":"One Punch Man",
-    "score":8.51,
-    "startYear":2015,
+    "score":"8.51",
+    "startYear":"2015",
     "studios":"Madhouse"
 
 
 
 },{
     "name":"Sword Art Online",
-    "score":7.20,
-    "startYear":2012,
+    "score":"7.20",
+    "startYear":"2012",
     "studios":"A-1 Pictures"
 
 
 
 },{
     "name":"Boku no Hero Academia",
-    "score":7.93,
-    "startYear":2016,
+    "score":"7.93",
+    "startYear":"2016",
     "studios":"Bones"
 
 
 
 },{
     "name":"Tokyo Ghoul",
-    "score":7.79,
-    "startYear":2014,
+    "score":"7.79",
+    "startYear":"2014",
     "studios":"Pierrot"
 
 
 
 },{
     "name":"Steins;Gate",
-    "score":9.08,
-    "startYear":2011,
+    "score":"9.08",
+    "startYear":"2011",
     "studios":"White Fox"
 
 
 
 },{
     "name":"No Game No Life",
-    "score":8.10,
-    "startYear":2014,
+    "score":"8.10",
+    "startYear":"2014",
     "studios":"Madhouse"
 
 
 
 },{
     "name":"Cowboy Bebop",
-    "score":8.75,
-    "startYear":1998,
+    "score":"8.75",
+    "startYear":"1998",
     "studios":"Sunrise"
 
 

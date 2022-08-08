@@ -21,3 +21,13 @@
   th {
     background-color: rgb(128, 113, 113);
   }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  td {
+    border: 1px solid #ffffff;
+    text-align: left;
+    padding: 8px;
+    font-size: 32px;
+  }
