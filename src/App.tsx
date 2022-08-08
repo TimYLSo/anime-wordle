@@ -22,24 +22,29 @@ function App() {
     undefined
   );
   useEffect(() => {
-    console.log(guessInfo)
+    console.log(guessInfo);
     if(guessInfo !== undefined){
-      const newGuess = {
-        guessNumber:guessNumber,
-        name: guessInfo.title,
-        score: guessInfo.score,
-        startYear:  guessInfo.year,
-        studios: guessInfo.studios[0].name,
-      };
-      console.log(newGuess)
-      if (newGuess === null || newGuess === undefined){
-        alert("anime not found");
-        return
+   for( const element of guessInfo){
+      if(element.approved === true){
+        console.log(element,"currently on this anime")
+        const newGuess = {
+          guessNumber:guessNumber,
+          name: element.title,
+          score: element.score,
+          startYear:  element.year,
+          studios: element.studios[0].name,
+        };
+        console.log(newGuess)
+        const newGuesses = [newGuess, ...guessTable];
+        setGuessTable(newGuesses);
+        console.log("rendered table");
+        setGuessNumber((guessNumber) => guessNumber - 1);
+        break
       }
-      const newGuesses = [newGuess, ...guessTable];
-      setGuessTable(newGuesses);
-      console.log("rendered table");
-      setGuessNumber((guessNumber) => guessNumber - 1);
+      console.log(element.title,element.approved)
+      ///alert("anime not found")
+    };
+
 
   };
   }, [guessInfo]);
@@ -110,11 +115,12 @@ function App() {
     console.log("Guess number %d is %s", guessNumber, guess);
 
     await axios
-    .get(AnimeApi + "?q=" + guess)
+    .get(AnimeApi ,{params:{q:guess,type:"tv",sort:"asc",aproved:true,
+}})
     .then((res) => {
-      const response = res.data.data[0]
+      const response = res.data.data
       setGuessInfo(response);
-      console.log("got data");
+      console.log("got response");
       console.log(res)
 
       console.log(guessInfo);}
