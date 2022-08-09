@@ -31,3 +31,10 @@
     padding: 8px;
     font-size: 32px;
   }
+  .header {
+    padding: 10px;
+    text-align: center;
+    background: #5332a5;
+    color: rgba(12, 228, 5, 0.951);
+    font-size: 20px;
+  }

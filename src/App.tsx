@@ -3,9 +3,20 @@ import { useEffect, useState } from "react";
 import Clue from "./components/Clue";
 import "./App.css";
 import possibleAnswers from "./answers.json";
+import IconButton from "@mui/material/IconButton";
 ///import Icon from "@mui/material/Icon";
 import axios from "axios";
 import { Alert } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import TextField from "@mui/material/TextField";
+import Button from '@mui/material/Button';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 function App() {
   const [guess, setGuess] = useState("");
@@ -38,8 +49,8 @@ function App() {
     if (guessInfo !== undefined) {
       console.log("rendering table");
       for (const element of guessInfo) {
-        if (element.approved === true) {
-          console.log(element, "currently on this anime");
+        if (element.approved === true && element.studios.length !== 0) {
+          console.log(element, "currently on this anime",element.studios.length );
           const name = element.title;
           var score = element.score;
           var year = element.year;
@@ -64,7 +75,7 @@ function App() {
             year = year + downArrow;
           } else if (answer.startYear > year) {
             year = year + upArrow;
-          } else if (answer.startYear == year) {
+          } else if (answer.startYear === year) {
             year = year + dash;
           }
           const newGuess = {
@@ -81,7 +92,9 @@ function App() {
           setGuessNumber((guessNumber) => guessNumber - 1);
           break;
         }
+
       }
+      alert("anime not found, please check spelling");
     }
     if (guessInfo === []) {
       alert("anime not found, please check spelling");
@@ -100,51 +113,63 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <button onClick={handleGuess}>info</button>
-      <h1>Enter your guess here{upArrow}</h1>
+    <div
+    >
+
+      <div className = "header">
+      <h1>Anime Wordle App</h1>
+      </div>
       <div>
         <label>Guess</label>
         <br />
-        <input
-          type="text"
+        <TextField
+          className="text"
           placeholder="Please enter your guess"
-          id="anime_name"
+          id="guess_input"
           name="anime_name"
           onChange={(e) => setGuess(e.target.value)}
         />
-        <button onClick={handleGuess}>Guess</button>
+        <Button variant="contained" startIcon = {<SearchIcon/>} onClick={() => {handleGuess();}}> Guess </Button>
       </div>
 
       <Clue text={guess} guessNumber={guessNumber} />
       <div className="app-container">
-        <table>
-          <thead>
-            <tr>
-              <th>guess</th>
-              <th>Name</th>
-              <th>Score</th>
-              <th>Start Year</th>
-              <th>Studio</th>
-            </tr>
-          </thead>
-          <tbody>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <TableHead>
+      <TableRow>
+      <TableCell style={{ width: 50 }} align="right">Guess</TableCell>
+      <TableCell  align="right">Name</TableCell>
+      <TableCell  align="right">Score</TableCell>
+      <TableCell  align="right">Start Year</TableCell>
+      <TableCell  align="right">Studio</TableCell>
+      </TableRow>
+            </TableHead>
+            <TableBody>
             {guessTable.map((anime) => (
-              <tr>
-                <td>{anime.guessNumber}</td>
-                <td>{anime.name}</td>
-                <td>{anime.score}</td>
-                <td>{anime.startYear}</td>
-                <td>{anime.studios}</td>
-              </tr>
+              <TableRow 
+              key={anime.name} 
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+              <TableCell align = "center">
+                <b>{anime.guessNumber}</b>
+              </TableCell> 
+              <TableCell align="right">{anime.name}</TableCell>
+              <TableCell align="right">{anime.score}</TableCell>
+              <TableCell align="right">{anime.startYear}</TableCell>
+              <TableCell align="right">{anime.studios}</TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+          </Table>
       </div>
     </div>
   );
 
   function handleGuess() {
+    if (guess===""){
+      alert("please enter a guess")
+      return
+    }
     getAnime();
   }
   async function getAnime() {
